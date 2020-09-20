@@ -4,6 +4,8 @@ import com.github.openpledger.user.database.model.UserModel;
 import com.github.openpledger.user.database.repository.UserRepository;
 import com.github.openpledger.user.domain.entity.User;
 import io.micronaut.core.convert.ConversionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -24,6 +26,8 @@ public final class UserService {
 
     private static final int PASSWORD_KEY_ITERATION_COUNT = 10000;
     private static final int PASSWORD_KEY_LENGTH = 160;
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final ConversionService<ConversionService> conversionService;
 
@@ -113,7 +117,8 @@ public final class UserService {
                     sb_password.toString()
                 )
             );
-        } catch (final NoSuchAlgorithmException | InvalidKeySpecException ignore) {
+        } catch (final NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            LOGGER.error("Cannot update password for user {}", user.getId(), ex);
             return false;
         }
 
@@ -145,7 +150,8 @@ public final class UserService {
             }
 
             return password_x[3].compareTo(sb_password.toString()) == 0;
-        } catch (final NoSuchAlgorithmException | InvalidKeySpecException e) {
+        } catch (final NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            LOGGER.error("Cannot verify password for user {}", user.getId(), ex);
             return false;
         }
     }

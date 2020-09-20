@@ -24,3 +24,4 @@ flyway:
             enabled: true
             locations:
                 - classpath:db/migration
+                - classpath:db/extra
