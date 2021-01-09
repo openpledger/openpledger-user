@@ -29,18 +29,18 @@ public final class UserService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    private final ConversionService<ConversionService> conversionService;
+    private final ConversionService<?> conversionService;
 
     private final UserRepository userRepository;
 
     /**
      * Build a new instance.
      *
-     * @param userRepository handle to the conversion service
+     * @param conversionService handle to the conversion service
      * @param userRepository handle to the user repository
      */
     @Inject
-    public UserService(final ConversionService<ConversionService> conversionService,
+    public UserService(final ConversionService<?> conversionService,
                        final UserRepository userRepository) {
         this.conversionService = conversionService;
         this.userRepository = userRepository;
